@@ -181,10 +181,10 @@ const Index = () => {
       </div>
       <div className="grid gap-8 md:gap-12 mt-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {[
-          { name: "Nishtha", photo: "/images/Nishtha.jpg" },
-          { name: "Aman", photo: "/images/Aman.png" },
-          { name: "Arjun", photo: "/images/Arjun.jpeg" },
-          { name: "Dron", photo: "/images/Dron.jpeg" },
+          { name: "Nishtha Goyal", photo: "/images/Nishtha.jpg" },
+          { name: "Aman Deep Singh", photo: "/images/Aman.png" },
+          { name: "Arjun Dogra", photo: "/images/Arjun.jpeg" },
+          { name: "Dron Haritwal", photo: "/images/Dron.jpeg" },
           { name: "Gomathi Nayagam", photo: "/images/Mathi.JPG" },
         ].map((creator, index) => (
           <motion.div
