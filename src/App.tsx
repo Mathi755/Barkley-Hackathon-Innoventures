@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import ChatBot from "@/components/ChatBot";
 
 // Pages
 import Index from "./pages/Index";
@@ -102,6 +102,8 @@ const App = () => {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          {/* Add the ChatBot component */}
+          <ChatBot theme_card_color="bg-primary/10" />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
