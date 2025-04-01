@@ -162,7 +162,48 @@ const Index = () => {
           </div>
         </div>
       </motion.section>
-
+{/* Creators Section */}
+<motion.section
+  className="py-12 md:py-24 bg-accent rounded-lg my-12"
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.6 }}
+>
+  <div className="container px-4 md:px-6">
+    <div className="flex flex-col items-center justify-center text-center">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          Meet the Creators
+        </h2>
+        <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+          The talented individuals behind SpamShield.
+        </p>
+      </div>
+      <div className="grid gap-8 md:gap-12 mt-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        {[
+          { name: "Nishtha", photo: "/images/Nishtha.jpg" },
+          { name: "Aman", photo: "/images/Aman.png" },
+          { name: "Arjun", photo: "/images/Arjun.jpeg" },
+          { name: "Dron", photo: "/images/Dron.jpeg" },
+          { name: "Gomathi Nayagam", photo: "/images/Mathi.JPG" },
+        ].map((creator, index) => (
+          <motion.div
+            key={index}
+            className="flex flex-col items-center space-y-4 bg-primary/10 p-6 rounded-lg shadow-md"
+            whileHover={{ scale: 1.05 }}
+          >
+            <img
+              src={creator.photo}
+              alt={creator.name}
+              className="h-24 w-24 rounded-full object-cover"
+            />
+            <h3 className="text-lg font-bold">{creator.name}</h3>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </div>
+</motion.section>
       {/* CTA Section */}
       <motion.section
         className="py-12 md:py-24"
