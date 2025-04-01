@@ -164,6 +164,21 @@ export function SignupForm() {
               />
             </div>
           </div>
+          {/* Agreement Section */}
+          <div className="space-y-2">
+            <div className="flex items-start space-x-2">
+              <input
+                id="agreement"
+                type="checkbox"
+                className="mt-1 h-4 w-4 border-gray-300 rounded text-primary focus:ring-primary"
+                required
+              />
+              <label htmlFor="agreement" className="text-sm text-muted-foreground">
+                By signing up, you agree to allow us to record live calls for fraud detection purposes. 
+                We promise that your details will not be leaked to anyone.
+              </label>
+            </div>
+          </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <Button type="submit" className="w-full" disabled={isLoading}>

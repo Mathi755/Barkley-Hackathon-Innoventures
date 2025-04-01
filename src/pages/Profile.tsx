@@ -23,32 +23,32 @@ const ProfilePhotoUpload = ({ userId, avatarUrl, onUploadSuccess }) => {
       setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.');
+        throw new Error("You must select an image to upload.");
       }
 
       const file = event.target.files[0];
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const filePath = `${userId}/${Math.random().toString(36).slice(2)}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('profile_photos')
-        .upload(filePath, file, { upsert: true }); // Add upsert option
+        .from("profile_photos")
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) {
         throw uploadError;
       }
 
       const { data } = supabase.storage
-        .from('profile_photos')
+        .from("profile_photos")
         .getPublicUrl(filePath);
 
       const publicUrl = data.publicUrl;
 
       // Update the avatar_url in the profiles table
       const { error: profileUpdateError } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({ avatar_url: publicUrl })
-        .eq('id', userId);
+        .eq("id", userId);
 
       if (profileUpdateError) {
         throw profileUpdateError;
@@ -72,13 +72,45 @@ const ProfilePhotoUpload = ({ userId, avatarUrl, onUploadSuccess }) => {
     }
   };
 
+  const deleteAvatar = async () => {
+    try {
+      setUploading(true);
+
+      // Reset the avatar_url in the profiles table
+      const { error: profileUpdateError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: null })
+        .eq("id", userId);
+
+      if (profileUpdateError) {
+        throw profileUpdateError;
+      }
+
+      setAvatarPath(null);
+      onUploadSuccess(null);
+
+      toast({
+        title: "Photo deleted",
+        description: "Your profile photo has been removed successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Delete failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="h-24 w-24 rounded-full relative mb-4 overflow-hidden bg-muted">
         {avatarPath ? (
-          <img 
-            src={avatarPath} 
-            alt="Profile" 
+          <img
+            src={avatarPath}
+            alt="Profile"
             className="h-full w-full object-cover"
           />
         ) : (
@@ -87,33 +119,44 @@ const ProfilePhotoUpload = ({ userId, avatarUrl, onUploadSuccess }) => {
           </div>
         )}
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 hover:opacity-100 transition-opacity">
-          <Label 
-            htmlFor="avatar-upload" 
+          <Label
+            htmlFor="avatar-upload"
             className="cursor-pointer flex items-center justify-center w-full h-full"
           >
             <Camera className="h-8 w-8 text-white" />
             <span className="sr-only">Upload photo</span>
           </Label>
-          <Input 
-            id="avatar-upload" 
-            type="file" 
-            accept="image/*" 
-            className="hidden" 
+          <Input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
             disabled={uploading}
-            onChange={uploadAvatar} 
+            onChange={uploadAvatar}
           />
         </div>
       </div>
-      <div className="text-center">
-        <Button 
-          variant="ghost" 
-          size="sm" 
+      <div className="text-center space-y-2">
+        <Button
+          variant="ghost"
+          size="sm"
           className="text-xs"
-          onClick={() => document.getElementById('avatar-upload').click()}
+          onClick={() => document.getElementById("avatar-upload").click()}
           disabled={uploading}
         >
-          {uploading ? 'Uploading...' : 'Change Photo'}
+          {uploading ? "Uploading..." : "Change Photo"}
         </Button>
+        {avatarPath && (
+          <Button
+            variant="destructive"
+            size="sm"
+            className="text-xs"
+            onClick={deleteAvatar}
+            disabled={uploading}
+          >
+            {uploading ? "Deleting..." : "Delete Photo"}
+          </Button>
+        )}
       </div>
     </div>
   );
